@@ -1,0 +1,9 @@
+@import "@fortawesome/fontawesome-free/css/all.css";
+@import '../css/toggle.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+[x-cloak] {
+    display: none;
+}
