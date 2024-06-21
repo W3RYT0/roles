@@ -32,37 +32,40 @@
         @foreach ($users as $user)
         <div class="bg-gray-300 rounded-lg">
             <div class="grid grid-cols-4">
-                <div class="pl-1 col-span-3">Nombre de Rol</div>
-                <div class=" justify-end text-end pr-2">
-                    {{-- Controles --}}
-                    @if ($historicos==1)
-                                    <div class="inline-flex top-1 right-6">
-                                        <a wire:click="confirmUserRestauration({{$user->id}})" title="Restaurar usuario"
-                                            class="block pl-1 text-sm font-normal text-gray-500 cursor-pointer font-montserrat hover:text-gray-900 hover:bg-gray-100 hover:rounded-full">
-                                            <i class="pr-2 fa-solid fa-recycle text-lime-500 hover:text-lime-800"></i>
-                                        </a>
-                                    </div>
-                                    <div class="inline-flex top-1 right-0">
-                                        <a wire:click="confirmUserDestruction({{$user->id}})" title="Destruir registro"
-                                            class="block pl-1 text-sm font-normal text-gray-500 cursor-pointer font-montserrat hover:text-gray-900 hover:bg-gray-100 hover:rounded-full">
-                                            <i class="pr-2 text-red-500 hover:text-red-800 fa-sm fa-solid fa-user-slash"></i>
-                                        </a>
-                                    </div>
-                                @else
-                                    <div class="inline-flex top-1 right-6">
-                                        <a href="{{ route('users.edit', $user->id) }}" title="Modificar información"
-                                            class="block pl-1 text-sm font-normal text-gray-500 cursor-pointer font-montserrat hover:text-gray-900 hover:bg-gray-100 hover:rounded-full">
-                                            <i class="pr-2 fa-solid fa-sm fa-user-pen text-lime-500 hover:text-lime-800"></i>
-                                        </a>
-                                    </div>
-                                    <div class="inline-flex top-1 right-0">
-                                        <a wire:click="confirmUserDeletion({{$user->id}})" title="Eliminar registro"
-                                            class="block pl-1 text-sm font-normal text-gray-500 cursor-pointer font-montserrat hover:text-gray-900 hover:bg-gray-100 hover:rounded-full">
-                                            <i class="pr-2 text-red-500 hover:text-red-800 fa-sm fa-solid fa-user-xmark"></i>
-                                        </a>
-                                    </div>
-                                @endif
+                <div class="pl-1 col-span-3 font-semibold">
+                    {{$user->roles->first()->name}}
                 </div>
+                <div class=" justify-end text-end pr-2">
+                    {{-- User Controls --}}
+                    @if ($historicos==1)
+                        <div class="inline-flex top-1 right-6">
+                            <a wire:click="confirmUserRestauration({{$user->id}})" title="Restaurar usuario"
+                                class="block pl-1 text-sm font-normal text-gray-500 cursor-pointer font-montserrat hover:text-gray-900 hover:bg-gray-100 hover:rounded-full">
+                                <i class="pr-2 fa-solid fa-recycle text-lime-500 hover:text-lime-800"></i>
+                            </a>
+                        </div>
+                        <div class="inline-flex top-1 right-0">
+                            <a wire:click="confirmUserDestruction({{$user->id}})" title="Destruir registro"
+                                class="block pl-1 text-sm font-normal text-gray-500 cursor-pointer font-montserrat hover:text-gray-900 hover:bg-gray-100 hover:rounded-full">
+                                <i class="pr-2 text-red-500 hover:text-red-800 fa-sm fa-solid fa-user-slash"></i>
+                            </a>
+                        </div>
+                    @else
+                        <div class="inline-flex top-1 right-6">
+                            <a href="{{ route('users.edit', $user->id) }}" title="Modificar información"
+                                class="block pl-1 text-sm font-normal text-gray-500 cursor-pointer font-montserrat hover:text-gray-900 hover:bg-gray-100 hover:rounded-full">
+                                <i class="pr-2 fa-solid fa-sm fa-user-pen text-lime-500 hover:text-lime-800"></i>
+                            </a>
+                        </div>
+                        <div class="inline-flex top-1 right-0">
+                            <a wire:click="confirmUserDeletion({{$user->id}})" title="Eliminar registro"
+                                class="block pl-1 text-sm font-normal text-gray-500 cursor-pointer font-montserrat hover:text-gray-900 hover:bg-gray-100 hover:rounded-full">
+                                <i class="pr-2 text-red-500 hover:text-red-800 fa-sm fa-solid fa-user-xmark"></i>
+                            </a>
+                        </div>
+                    @endif
+                </div>
+                {{-- User Data --}}
                 <div class="pl-4 py-2 items-center justify-center text-center bg-white">
                     <img src="{{ $user->profile_photo_url }}" 
                         class="p-1 border {{$historicos==1 ? 'opacity-20' : '' }} object-cover object-center rounded-full w-16 h-16" />
