@@ -33,7 +33,13 @@
         <div class="bg-gray-300 rounded-lg">
             <div class="grid grid-cols-4">
                 <div class="pl-1 col-span-3 font-semibold">
-                    {{$user->roles->first()->name}}
+                    @if ($user->roles->first())
+                        {{$user->roles->first()->name}}
+                    @else
+                        <span class="text-red-800">
+                            Sin Rol Asignado
+                        </span> 
+                    @endif
                 </div>
                 <div class=" justify-end text-end pr-2">
                     {{-- User Controls --}}

@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
     
-    <div class="container mx-0 my-0 md:my-12 md:mx-auto">
+    <div class="container mx-0 my-0 md:my-2 md:mx-auto">
         <div class="shadow-xl h-2/3 bg-slate-200 sm:rounded-lg">
             @livewire('admin.user-component')
         </div>
