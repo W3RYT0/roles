@@ -29,11 +29,16 @@
     {{-- Users Content --}}
     <div class="grid lg:grid-cols-4 lg:gap-2 md:grid-cols-2 md:gap-2 gap-1 lg:p-2 md:p-1">
         {{-- User Card --}}
-        @foreach ($users as $user)
+        @forelse ($users as $user)
         <div class="bg-gray-300 rounded-lg">
             <div class="grid grid-cols-4">
+                {{-- Rol asignado --}}
                 <div class="pl-1 col-span-3 font-semibold">
-                    {{$user->roles->first()->name}}
+                    @if ($user->roles->first())
+                        {{$user->roles->first()->name}}
+                    @else
+                    "Sin Rol Asignado"
+                    @endif
                 </div>
                 <div class=" justify-end text-end pr-2">
                     {{-- User Controls --}}
@@ -80,7 +85,10 @@
                 </div>
             </div>
         </div>
-        @endforeach
+        @empty
+            
+        @endforelse
+
         <div class="w-full -mb-2 text-sm font-montserrat">
             @if ($users->count())
                 {{ $users->links() }}

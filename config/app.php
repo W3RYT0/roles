@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://www.roles.fake.com/'),
+    'url' => env('APP_URL', 'http://www.roles.fake.com'),
 
     /*
     |--------------------------------------------------------------------------
