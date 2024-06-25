@@ -27,7 +27,7 @@
             </div>
             <div class=" -mt-6 py-2">
                 @if (@isset($user))
-                    <div class="mt-2" x-show="! photoPreview">
+                    <div class="mt-2 border rounded-full w-20" x-show="! photoPreview">
                         <img src="{{ $user->profile_photo_url }}" alt="{{ $user->name }}" class="rounded-full h-20 w-20 object-cover">
                     </div>
                 @endif
@@ -77,16 +77,24 @@
                     <div >
                         <div class="px-2">
                             <div class="flex w-full mb-1 ">
-                                <div class=" w-auto "><label class="switch" for="check-{{ $rol->name }}">
+                                <div class=" w-auto"><label class="switch" for="check-{{ $rol->name }}">
                                     <input type="radio" id="check-{{ $rol->name }}" name="rol" value="{{ $rol->id }}"
                                         {{ old('rol') ? (old('rol') == $rol->id ? 'checked' : '') : (isset($user) ? ($user->hasAnyRole($rol->name) ? 'checked' : '') : '') }}/> 
                                         <span class="slider round"></span>
                                 </label></div>
-                                <div class=" w-24 ml-3 text-sm font-medium text-gray-900">{{ $rol->name }}</div>
+                                <div class=" w-24 ml-3 text-sm font-bold text-gray-900">{{ $rol->name }}</div>
                                 <div class=" w-full ml-3 text-sm font-medium text-gray-900 ">
-                                    {{ $rol->permissions->count() }} Permisos: 
+                                    @if ( $rol->permissions->count() == 1 )
+                                        {{ $rol->permissions->count() }} Permiso 
+                                    @else
+                                        {{ $rol->permissions->count() }} Permisos
+                                    @endif
+
                                     @foreach ($rol->permissions as $index =>$rolpermission)
-                                        {{ $rolpermission->description }} {{ $rolpermission->group }} {{ $index+1==$rol->permissions->count() ? '' : ','}}
+                                    <span class="font-semibold italic ">
+                                        ( {{ $rolpermission->group }}:
+                                    </span>
+                                     {{ $rolpermission->description }})  {{ $index+1==$rol->permissions->count() ? '' : '-'}}
                                     @endforeach
                                 </div>
                             </div>

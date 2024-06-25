@@ -27,11 +27,7 @@
             'route' => route('profile.show'),
             'active'=> request()->routeIs('profile.show'),
         ],
-        [
-            'name'  => 'Nuevo',
-            'route' => route('profile.show'),
-            'active'=> request()->routeIs('profile.show'),
-        ],
+
     ];
 @endphp
 

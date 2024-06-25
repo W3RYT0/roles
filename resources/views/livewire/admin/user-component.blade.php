@@ -37,7 +37,9 @@
                     @if ($user->roles->first())
                         {{$user->roles->first()->name}}
                     @else
-                    "Sin Rol Asignado"
+                        <span class="text-red-800">
+                            Sin Rol Asignado
+                        </span> 
                     @endif
                 </div>
                 <div class=" justify-end text-end pr-2">
