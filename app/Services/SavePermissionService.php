@@ -19,6 +19,7 @@ class SavePermissionService
                 'name' => request()['name'],
                 'description' => request()['description'],
                 'group' => request()['group'],
+                'guard_name' => 'web',
             ]);
             DB::commit();
         } catch (\Throwable $th) {

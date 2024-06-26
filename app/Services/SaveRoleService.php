@@ -17,6 +17,7 @@ class SaveRoleService
         try {
             $role = Role::create([
                 'name' => request()['name'],
+                'guard_name' => 'web',
             ]);
             $role->permissions()->sync($request->permissions);
             DB::commit();
