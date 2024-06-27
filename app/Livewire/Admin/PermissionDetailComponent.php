@@ -4,44 +4,50 @@ namespace App\Livewire\Admin;
 
 use Livewire\Component;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Str;
 
 class PermissionDetailComponent extends Component
 {
     public $permission=null;
-    public  $tip_description, $tip_permission, $grupo, $desc;
-    public $ejemplos = ['Listar', 'Mostrar', 'Crear', 'Editar','Autorizar', 'Eliminar'];
+    public Permission $permiso;
+    public  $tip_description, $tip_permission, $grupo, $desc, $name;
+    public $ejemplos = [
+        'index'  => 'Listar', 
+        'show'   => 'Mostrar', 
+        'create' =>'Crear', 
+        'edit'   =>'Editar', 
+        'delete' =>'Eliminar'
+    ];
 
-    public function mount() {
+    public function mount($permission) {
         if ($this->permission) {
-            $this->desc = $this->permission->description;
             $this->grupo = $this->permission->group;
             $this->existentes($this->grupo);
+        }
+        if (!is_null ($permission)) {
+            $this->grupo= $permission->group;
+            $this->desc= $permission->description;
+            $this->name= $permission->name;
+            
         }
     }
 
     public function render()
     {
-        $groups=Permission::groupBy('group')->orderByDesc('group')->pluck('group');
-        $grupo='';
-        foreach ($groups as $group){
-            $grupo=$group.', '.$grupo;
-        }
-        $grupo=substr($grupo,0,-2);
-        $grupos='Grupos existentes: '.(trim($grupo)<>'' ? $grupo : 'Ninguno');
+        $grupos=$this->renderGrupos();
        return view('livewire.admin.permission-detail-component', compact('grupos'));
     }
 
     public function updatedGrupo()
     {
             $this->existentes($this->grupo);
+            $this->updatedDesc();
     }
+
     public function updatedDesc(){
-        //foreach ($this->desc as $key => $d) {
-            dd($this->desc);
-        //}
-        // if (condition) {
-        //     # code...
-        // }
+        if ($this->grupo && $this->desc) {
+            $this->name = Str::lower( $this->removeSpace($this->desc).'_'.$this->removeSpace($this->grupo));
+        }
     }
 
     public function existentes($grupo) {
@@ -52,7 +58,7 @@ class PermissionDetailComponent extends Component
             $descripcion=$group->description.', '.$descripcion;
             $permiso=$group->name.', '.$permiso;
         }
-        $this->desc = substr($descripcion,0,-2);
+        // $this->desc = substr($descripcion,0,-2);
         $descripcion=substr($descripcion,0,-2);
         $descripciones='Permisos existentes del grupo '.$this->grupo.': '.(trim($descripcion)<>'' ? $descripcion : 'Ninguno');
         $permiso=substr($permiso,0,-2);
@@ -62,10 +68,51 @@ class PermissionDetailComponent extends Component
        $this->tip_permission = $permisos;
     }
 
-    public function agrega($txt)
-    {
-        // dd($this->desc.''.$txt);
-        $this->desc = $this->desc.', '.$txt;
+    public function renderGrupos(){
+        $grupos=Permission::groupBy('group')->orderByDesc('group')->pluck('group');
+        // $groups=Permission::groupBy('group')->orderByDesc('group')->pluck('group');
+        // $grupo='';
+        // foreach ($groups as $group){
+        //     $grupo=$group.', '.$grupo;
+        // }
+        // $grupo=substr($grupo,0,-2);
+        // $grupos='Grupos existentes: '.(trim($grupo)<>'' ? $grupo : 'Ninguno');
+        // $grupos='<span class="cursor-pointer" wire:click=agrega("'.$grupo.'")">'.$grupo.'</span>';
+        return $grupos;
+
     }
+
+    public function agrega($txt,int $tipo)
+    {
+        switch ($tipo) {
+            case 1:
+                if ($this->grupo == '') {
+                    # code...
+                    // $this->desc = $this->desc.', '.$txt;
+                    $this->grupo = $txt;
+                    $this->updatedGrupo();
+                }
+                break;
+            case 2:
+                if ($this->desc == '') {
+                    # code...
+                    // $this->desc = $this->desc.', '.$txt;
+                    $this->desc = $txt;
+                    $this->updatedDesc();            
+                }// dd($this->desc.''.$txt);
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+    }
+
+    public function removeSpace($cadena){
+        $frase= preg_replace(['/\s+/','/^\s|\s$/'],[''], $cadena);
+        return $frase;
+    }
+
+    
 
 }
