@@ -24,7 +24,8 @@ class PermissionDetailComponent extends Component
             $this->grupo = $this->permission->group;
             $this->existentes($this->grupo);
         }
-        if (!is_null ($permission)) {
+        
+        if ($permission) {
             $this->grupo= $permission->group;
             $this->desc= $permission->description;
             $this->name= $permission->name;
@@ -46,7 +47,7 @@ class PermissionDetailComponent extends Component
 
     public function updatedDesc(){
         if ($this->grupo && $this->desc) {
-            $this->name = Str::lower( $this->removeSpace($this->desc).'_'.$this->removeSpace($this->grupo));
+            $this->name = Str::lower($this->searchArray($this->desc).'_'.$this->removeSpace($this->grupo));
         }
     }
 
@@ -70,14 +71,6 @@ class PermissionDetailComponent extends Component
 
     public function renderGrupos(){
         $grupos=Permission::groupBy('group')->orderByDesc('group')->pluck('group');
-        // $groups=Permission::groupBy('group')->orderByDesc('group')->pluck('group');
-        // $grupo='';
-        // foreach ($groups as $group){
-        //     $grupo=$group.', '.$grupo;
-        // }
-        // $grupo=substr($grupo,0,-2);
-        // $grupos='Grupos existentes: '.(trim($grupo)<>'' ? $grupo : 'Ninguno');
-        // $grupos='<span class="cursor-pointer" wire:click=agrega("'.$grupo.'")">'.$grupo.'</span>';
         return $grupos;
 
     }
@@ -113,6 +106,14 @@ class PermissionDetailComponent extends Component
         return $frase;
     }
 
-    
+    public function searchArray($array){
+        $array=$this->removeSpace($array);
+        if (in_array($array, $this->ejemplos)) {
+            $frase=array_search($array, $this->ejemplos);
+        }else{
+            $frase=$array;
+        } 
+        return $frase;
+    } 
 
 }

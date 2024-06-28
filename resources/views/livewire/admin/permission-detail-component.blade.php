@@ -8,12 +8,15 @@
                 <label for="group" class="absolute text-xs text-gray-500 duration-300 transform -translate-y-3 scale-75 top-1 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-5 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-75 peer-focus:-translate-y-3 left-3">Modelo o Grupo al que pertenece el permiso</label>
                     <span class="pt-2 pl-2 text-xs font-light text-gray-400 " id="tip_group" name="tip_group">
                         Grupos existentes:
-                        {{-- {{ $grupos ?? '' }} --}}
-                        @foreach ($grupos as $gr)
-                        <span class="cursor-pointer" wire:click='agrega("{{$gr}}",1)'>
-                            {{$gr}},
-                        </span>
-                    @endforeach 
+                        @forelse ($grupos as $gr)
+                            <span class="cursor-pointer" wire:click='agrega("{{$gr}}",1)'>
+                                {{$gr}},
+                            </span>
+                        @empty
+                            <span class="cursor-pointer">
+                                Ninguno
+                            </span>
+                        @endforelse 
                     </span>
                 </div>
         </div>

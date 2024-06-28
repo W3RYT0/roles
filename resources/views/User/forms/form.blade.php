@@ -71,7 +71,6 @@
         <ul>
             @foreach ($roles as $rol)
             <span class="bg-">
-
             </span>
                 <li class="rounded-lg">
                     <div >
