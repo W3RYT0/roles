@@ -11,7 +11,8 @@ class PermissionDetailComponent extends Component
     public $permission=null;
     public Permission $permiso;
     public  $tip_description, $tip_permission, $grupo, $desc, $name;
-    public $ejemplos = [
+    public $ejemplos;
+    public $ejemplo = [
         'index'  => 'Listar', 
         'show'   => 'Mostrar', 
         'create' =>'Crear', 
@@ -22,6 +23,7 @@ class PermissionDetailComponent extends Component
     public function mount($permission) {
         if ($this->permission) {
             $this->grupo = $this->permission->group;
+            $this->ejemplos = $this->ejemplo;
             $this->existentes($this->grupo);
         }
         
@@ -29,7 +31,8 @@ class PermissionDetailComponent extends Component
             $this->grupo= $permission->group;
             $this->desc= $permission->description;
             $this->name= $permission->name;
-            
+            $this->ejemplos = $this->ejemplo; 
+            $this->existentes($this->grupo);
         }
     }
 
@@ -41,13 +44,16 @@ class PermissionDetailComponent extends Component
 
     public function updatedGrupo()
     {
-            $this->existentes($this->grupo);
-            $this->updatedDesc();
+        $this->ejemplos = $this->ejemplo;    
+        $this->existentes($this->grupo);
+        $this->updatedDesc();
+
     }
 
     public function updatedDesc(){
         if ($this->grupo && $this->desc) {
             $this->name = Str::lower($this->searchArray($this->desc).'_'.$this->removeSpace($this->grupo));
+            $this->existentes($this->grupo);
         }
     }
 
@@ -57,9 +63,9 @@ class PermissionDetailComponent extends Component
         $permiso='';
         foreach ($groups as $group){
             $descripcion=$group->description.', '.$descripcion;
+            $this->updateArray($group->description);
             $permiso=$group->name.', '.$permiso;
         }
-        // $this->desc = substr($descripcion,0,-2);
         $descripcion=substr($descripcion,0,-2);
         $descripciones='Permisos existentes del grupo '.$this->grupo.': '.(trim($descripcion)<>'' ? $descripcion : 'Ninguno');
         $permiso=substr($permiso,0,-2);
@@ -80,25 +86,25 @@ class PermissionDetailComponent extends Component
         switch ($tipo) {
             case 1:
                 if ($this->grupo == '') {
-                    # code...
-                    // $this->desc = $this->desc.', '.$txt;
                     $this->grupo = $txt;
                     $this->updatedGrupo();
                 }
                 break;
             case 2:
                 if ($this->desc == '') {
-                    # code...
-                    // $this->desc = $this->desc.', '.$txt;
                     $this->desc = $txt;
                     $this->updatedDesc();            
-                }// dd($this->desc.''.$txt);
+                }
                 break;
             
             default:
-                # code...
+                if ($this->grupo == '') {
+                    $this->grupo = $txt;
+                    $this->updatedGrupo();
+                }
                 break;
         }
+        
     }
 
     public function removeSpace($cadena){
@@ -114,6 +120,20 @@ class PermissionDetailComponent extends Component
             $frase=$array;
         } 
         return $frase;
-    } 
+    }
+    
+    public function updateArray($descGrupo){
+        $descGrupo=$this->removeSpace($descGrupo);
+        
+        if (in_array($descGrupo, $this->ejemplos)) {
+            $frase=array_search($descGrupo, $this->ejemplos);
+            unset($this->ejemplos[$frase]);
+            $d = 'Existe';
+        }else{
+            $d= 'No existe';
+        } 
+        // return $frase;
+        //dd($d);
+    }
 
 }

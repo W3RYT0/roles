@@ -47,6 +47,5 @@ class UserComponent extends Component
         $this->resetPage();
         $this->render();
     }
-    
 }
 

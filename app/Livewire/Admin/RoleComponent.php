@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Spatie\Permission\Models\Role;
@@ -53,5 +54,6 @@ class RoleComponent extends Component
         $this->_role = $role->name;
         $this->isOpenRoleDeletion = $role->id;
     }
+
 }
 
