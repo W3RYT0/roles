@@ -7,7 +7,7 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## Roles y PErmisos 
+## Roles y Permisos 
 
     Mecanismo para elaboración de Roles y ermisos mediante Permission paquetería de Spatie
 
